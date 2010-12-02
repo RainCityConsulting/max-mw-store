@@ -1,0 +1,90 @@
+<project name="max-mw-store" default="compile" basedir=".">
+
+  <property name="name" value="max-mw-store"/>
+  <property name="catalina.base" value="${user.home}/opt/tomcat6"/>
+
+  <loadfile property="version" srcFile="${basedir}/.version">
+    <filterchain>
+      <striplinebreaks/>
+    </filterchain>
+  </loadfile>
+
+  <target name="clean" description="Remove generated files">
+    <delete dir="target"/>
+  </target>
+
+  <target name="war-dir" depends="war-dir-impl"/>
+
+  <target name="war-dir-impl">
+    <mkdir dir="target/${name}-${version}"/>
+
+    <copy todir="target/${name}-${version}">
+      <filterset>
+        <filter token="VERSION" value="${version}"/>
+      </filterset>
+
+      <fileset dir="src/main/webapp">
+        <exclude name="**/*.jpg"/>
+        <exclude name="**/*.png"/>
+        <exclude name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <copy todir="target/${name}-${version}">
+      <fileset dir="src/main/webapp">
+        <include name="**/*.jpg"/>
+        <include name="**/*.png"/>
+        <include name="**/*.gif"/>
+      </fileset>
+    </copy>
+
+    <mkdir dir="target/${name}-${version}/WEB-INF/lib"/>
+    <copy todir="target/${name}-${version}/WEB-INF/lib">
+      <fileset dir="lib">
+        <exclude name="servlet-api*.jar"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="war" description="Create war" depends="war-dir">
+    <jar destfile="target/${name}-${version}.war"
+        basedir="target/${name}-${version}"/>
+  </target>
+
+  <target name="d" description="Quick deploy - no compile" depends="war-dir-impl"/>
+
+  <target name="deploy" depends="war-dir">
+    <copy tofile="${catalina.base}/conf/Catalina/localhost/store.xml"
+        file="target/${name}-${version}/META-INF/context.xml">
+      <filterset>
+        <filter token="tomcat.doc.base" value="${basedir}/target/${name}-${version}"/>
+      </filterset>
+    </copy>
+  </target>
+
+  <target name="dpkg" depends="war">
+
+    <mkdir dir="target/${name}-${version}-dpkg"/>
+
+    <copy todir="target/${name}-${version}-dpkg">
+      <filterset>
+        <filter token="VERSION" value="${version}"/>
+      </filterset>
+      <fileset dir="dpkg"/>
+    </copy>
+
+    <chmod file="target/${name}-${version}-dpkg/debian/DEBIAN/preinst" perm="755"/>
+    <chmod file="target/${name}-${version}-dpkg/debian/DEBIAN/postinst" perm="755"/>
+
+    <copy file="target/${name}-${version}.war"
+        tofile="target/${name}-${version}-dpkg/debian/var/lib/max/max-admin.war"/>
+
+    <exec executable="fakeroot">
+      <arg line="dpkg-deb -b target/${name}-${version}-dpkg/debian"/>
+    </exec>
+
+    <move file="target/${name}-${version}-dpkg/debian.deb" tofile="target/${name}-${version}.deb"/>
+
+  </target>
+
+</project>

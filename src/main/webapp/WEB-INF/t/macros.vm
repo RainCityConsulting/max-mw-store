@@ -1,0 +1,76 @@
+#macro(image $path $attrs) <img src="#imageUrl($path)" ${attrs}/> #end
+
+#macro(imageUrl $path) $rstore.getUrl($path) #end
+
+#macro(productImagePreset $i $presetName)
+  #set ($presetOpt = $i.preset($presetName))
+  #if ($presetOpt.isDefined())
+    #image($MAxConfig.productImagePresetPath($i, $presetOpt.get()))
+  #end
+#end
+
+#macro(productAttachmentUrl $a) $rstore.getUrl($MAxConfig.productAttachmentPath($a)) #end
+
+#macro(money $m)<span class="currency">$format.money($m)</span>#end
+
+#macro(objectErrors $path)
+  #springBind($path)
+  #if ("$!status.errorMessage" != "")
+  <div class="object-errors">
+    <ul>
+      #foreach ($m in $status.errorMessages)
+      <li>$m</li>
+      #end 
+    </ul>
+  </div>
+  #end
+#end  
+
+#macro(fieldErrors)
+  #if ("$!status.errorMessage" != "")
+  <div class="field-errors">
+    <ul>
+      #foreach ($m in $status.errorMessages)
+      <li>$m</li>
+      #end
+    </ul>
+  </div>
+  #end
+#end
+
+#macro(fieldErrorClass) #if ("$!status.errorMessage" != "") field-error #end #end
+
+#macro(address $a)
+  #if ($a.legacyOrderAddress())
+    <div class="pre-formatted">$a.addressText</div>
+  #else
+    <div>$!a.firstName $!a.lastName</div>
+    #if ($a.isDiscrete)
+      <div>$!a.addressLine1</div>
+      #if ($a.addressLine2)
+        <div>$a.addressLine2</div>
+      #end
+      <div>$!a.city, $!a.region.abbreviation $!a.regionName $!a.postalCode</div>
+    #else
+      <div class="text">$a.addressText</div>
+    #end
+    #if ($a.country.name != "USA")
+    <div>$a.country.name</div>
+    #end
+  #end
+#end
+
+#macro(date $d)$format.date($d)#end
+
+#macro(order $o)
+  #date($o.creationDate)
+#end
+
+#macro(maskCreditCard $s)$format.maskCreditCard($s)#end
+
+#macro(productImagePresetUrl $i $presetName)
+  #set ($presetOpt = $i.preset($presetName))
+  #if ($presetOpt.isDefined())
+    #imageUrl($MAxConfig.productImagePresetPath($i, $presetOpt.get()))
+  #end
+#end

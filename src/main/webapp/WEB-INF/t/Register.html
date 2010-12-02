@@ -1,0 +1,73 @@
+<div class="register">
+
+  <h2>Register</h2>
+
+  <form method="post" action="#springUrl('/register')">
+
+    <table class="form register">
+
+      #springBind("r.firstName")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">First Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("r.lastName")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Last Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("r.phone")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Phone Number</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("r.email")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Email</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("r.password")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Password</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("r.passwordConfirm")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Password Confirm</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      <tr class="buttons">
+        <td>
+          <input type="submit" value="Register"/>
+        </td>
+      </tr>
+
+    </table>
+
+  </form>
+
+</div>

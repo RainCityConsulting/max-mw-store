@@ -1,0 +1,17 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+    "http://www.getahead.ltd.uk/dwr//dwr20.dtd">
+
+<dwr>
+    
+  <allow>
+
+    <convert converter="bean" match="com.pj.bean.Region"/>
+                    
+    <create creator="spring" javascript="AddressQuery">
+      <param name="beanName" value="addressQuery"/>
+    </create>
+
+  </allow>
+
+</dwr>

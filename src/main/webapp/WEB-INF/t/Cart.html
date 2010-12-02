@@ -1,0 +1,73 @@
+<div class="cart">
+  #if (!$hideTitle)
+  <h2>Cart</h2>
+  #end
+
+  #set ($c = $cartOpt.get())
+
+  <table class="list cart" style="white-space: nowrap;">
+    <tr>
+      <th>Product</th>
+      <th class="numeric">Item #</th>
+      <th class="currency">Unit Price</th>
+      <th>Qty</th>
+      <th class="currency">Total</th>
+    </tr>
+
+    #foreach ($i in $c.items)
+    #set ($p = $productQuery.findProductByUnit($i.unitId))
+    <tr>
+
+      <td>
+        <a href="#springUrl('/products/')${p.id}">$p.displayName($i.unitId)</a>
+      </td>
+
+      <td class="numeric">$p.sku</td>
+
+      <td class="currency">#money($i.pricePerUnit())</td>
+
+      <td class="quantity">
+        <form method="post" action="#springUrl('/update-cart-item/')$i.id">
+          <input class="quantity" type="text" name="qty" value="$i.quantity"/>
+          <input type="submit" name="update" value="Update"/> | 
+          <input type="submit" name="remove" value="Remove"/>
+        </form>
+      </td>
+
+      <td class="currency">
+        #if ($i.isDiscounted())
+        #else
+          #money($i.total(true))
+        #end
+      </td>
+
+    </tr>
+    #end
+
+    <tr>
+      <th colspan="4" style="text-align: right;">Product Subtotal</th>
+      <td>#money($c.itemTotal(true))</td>
+    </tr>
+
+<!--
+    <tr>
+      <th colspan="4">Order Total</th>
+      <td>
+        #if ($c.grandTotal().isDefined())
+          #money($cart.grandTotal())
+        #else
+          Cannot calculate Order Total
+        #end
+      </td>
+    </tr>
+-->
+
+  </table>
+
+</div>
+
+<div>
+  <form method="get" action="#springUrl('/checkout')">
+    <input type="submit" value="Begin Checkout &gt;"/>
+  </form>
+</div>

@@ -1,0 +1,122 @@
+<script type="text/javascript">
+  $(function() {
+    $("#shipping_select").change(function(evt) {
+      $("#shipping_form").submit();
+    });
+  });
+</script>
+
+#set ($cart = $cartOpt.get())
+
+<div class="checkout checkout-summary">
+  <h2>Review your order before submitting</h2>
+
+  <table class="list cart">
+    <tr>
+      <th>Product</th>
+      <th>Item #</th>
+      <th>Unit Price</th>
+      <th>Qty</th>
+      <th>Total</th>
+    </tr>
+
+    #foreach ($i in $cart.items)
+    #set ($p = $productQuery.findProductByUnit($i.unitId))
+    #set ($u = $p.unit($i.unitId))
+    <tr>
+
+      <td>
+        <a href="#springUrl('/products/')${p.id}">$p.displayName($i.unitId)</a>
+      </td>
+
+      <td>$p.sku</td>
+
+      <td>#money($u.price)</td>
+
+      <td>$i.quantity</td>
+
+      <td>
+        #if ($i.isDiscounted())
+        #else
+          #money($i.total(true))
+        #end
+      </td>
+
+    </tr>
+    #end
+
+    <tr>
+      <th colspan="4" style="text-align: right;">Product Subtotal</th>
+      <td>#money($cart.itemTotal(true))</td>
+    </tr>
+
+    <tr>
+      <th colspan="4" style="text-align: right;">Shipping</th>
+      <td>
+        #if ($checkout.hasShippedItem)
+          <form id="shipping_form" action="#springUrl('/checkout/shipping')" method="post">
+            #springBind("checkout.shippingPluginId")
+            <select id="shipping_select" name="$status.expression">
+              #foreach ($p in $shippingPlugins)
+              <option value="$p.id"
+                  #if ("$!status.value" == "$p.id")
+                    selected="selected"
+                  #end >#springMessage($p.id) ($p.price($shipping, $items))</option>
+              #end
+            </select>
+          </form>
+        #else
+          #money($checkout.shippingPrice)
+        #end
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan="4" style="text-align: right;">Tax</th>
+      <td>#money($checkout.tax)</td>
+    </tr>
+
+    <tr>
+      <th colspan="4" style="text-align: right;">Order Total</th>
+      <td>
+        #money($checkout.grandTotal)
+      </td>
+    </tr>
+
+  </table>
+
+  <div class="bill-to-address">
+    <h4>Bill To:</h4>
+    <div class="address">
+      #address($billing)
+    </div>
+    <ul class="menu">
+      <li><a href="#springUrl('/checkout')">Edit</a></li>
+    </ul>
+  </div>
+
+  <div class="ship-to-address">
+    <h4>Ship To:</h4>
+    <div class="address">
+      #address($shipping)
+    </div>
+    <ul class="menu">
+      <li><a href="#springUrl('/checkout')">Edit</a></li>
+    </ul>
+  </div>
+
+  <div style="clear: left;"></div>
+
+  <div class="payment-method">
+    <h4>Payment Method:</h4>
+    <div>#maskCreditCard($checkout.cardNumber)</div>
+    <ul class="menu">
+      <li><a href="#springUrl('/checkout')">Edit</a></li>
+    </ul>
+  </div>
+
+  <form method="post" action="#springUrl('/checkout/submit')">
+    <input type="submit" value="Submit Order">
+  </form>
+
+</div>

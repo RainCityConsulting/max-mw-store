@@ -1,0 +1,647 @@
+<script src="#springUrl('/dwr/engine.js')" type="text/javascript"></script>
+<script src="#springUrl('/dwr/interface/AddressQuery.js')" type="text/javascript"></script>
+
+<script type="text/javascript">
+  function loadBillingRegionInputs(countryId, selectedRegionId) {
+    AddressQuery.findRegionsByCountry(countryId, function(regions) {
+      if (regions.length == 0) {
+        $("tr.billing-address-region-select").hide();
+        $("tr.billing-address-region-input").show();
+      } else {
+        var opts = '';
+        for (var i = 0; i < regions.length; i++) {
+          var r = regions[i];
+          opts += '<option value="'+r.id+'">'+r.name+'</option>'
+        }
+
+        $("tr.billing-address-region-select select").empty().append(opts);
+
+        if (selectedRegionId > 0) {
+          $("tr.billing-address-region-select select").val(selectedRegionId);
+        }
+
+        $("tr.billing-address-region-select").show();
+        $("tr.billing-address-region-input").hide();
+      }
+    });
+  }
+
+  function loadShippingRegionInputs(countryId, selectedRegionId) {
+    AddressQuery.findRegionsByCountry(countryId, function(regions) {
+      if (regions.length == 0) {
+        $("tr.shipping-address-region-select").hide();
+        $("tr.shpiping-address-region-input").show();
+      } else {
+        var opts = '';
+        for (var i = 0; i < regions.length; i++) {
+          var r = regions[i];
+          opts += '<option value="'+r.id+'">'+r.name+'</option>'
+        }
+
+        $("tr.shipping-address-region-select select").empty().append(opts);
+
+        if (selectedRegionId > 0) {
+          $("tr.shipping-address-region-select select").val(selectedRegionId);
+        }
+
+        $("tr.shipping-address-region-select").show();
+        $("tr.shipping-address-region-input").hide();
+      }
+    });
+  }
+
+  $(function() {
+    $("select.billing-address-country").change(function(evt) {
+      loadBillingRegionInputs(this.value, 0);
+    });
+
+    $("select.shipping-address-country").change(function(evt) {
+      loadshippingRegionInputs(this.value, 0);
+    });
+
+    $("#same_as_billing").change(function(evt) {
+      if ($(this).attr("checked")) {
+        $("#new_shipping_address").hide();
+        $("#new_shipping_address_div").hide();
+        $("#shipping_address_list").hide();
+      } else {
+        $("#new_shipping_address").show();
+
+        #if ($addresses.isDefined())
+        $("#new_shipping_address_div").show();
+        #else
+        $("#new_shipping_address").show();
+        $("#new_shipping_address_checkbox").attr("checked", true);
+        #end
+
+        $("#shipping_address_list").show();
+        $("#new_shipping_address_checkbox").trigger("change");
+      }
+    });
+
+    $("#email").change(function(evt) {
+      $("#register_email").attr("value", $(this).attr("value"));
+    });
+
+    $("#new_billing_address_checkbox").change(function(evt) {
+      if ($(this).attr("checked")) {
+        $("#new_billing_address").show();
+        $("#billing_address_list").hide();
+      } else {
+        $("#new_billing_address").hide();
+        $("#billing_address_list").show();
+      }
+    });
+
+    $("#new_shipping_address_checkbox").change(function(evt) {
+      if ($(this).attr("checked")) {
+        $("#new_shipping_address").show();
+        $("#shipping_address_list").hide();
+      } else {
+        $("#new_shipping_address").hide();
+        $("#shipping_address_list").show();
+      }
+    });
+
+    $("#new_account_checkbox").change(function(evt) {
+      if ($(this).attr("checked")) {
+        $("#new_account").show();
+      } else {
+        $("#new_account").hide();
+      }
+    });
+
+    $("#billing_address_list div.address").each(function(i, e) {
+      if ($(this).attr("address-id") == "$!checkout.billingAddressId") {
+        $(this).addClass("selected");
+      }
+    });
+
+    $("#shipping_address_list div.address").each(function(i, e) {
+      if ($(this).attr("address-id") == "$!checkout.shippingAddressId") {
+        $(this).addClass("selected");
+      }
+    });
+
+    $("#billing_address_list div.address").click(function(evt) {
+      var aid = $(this).attr("address-id");
+
+      $("#billing_address_list div.address").each(function(i, e) {
+        $(this).removeClass("selected");
+      });
+
+      $(this).addClass("selected");
+      $("#billing_address_id").val(aid);
+    });
+
+    $("#shipping_address_list div.address").click(function(evt) {
+      var aid = $(this).attr("address-id");
+
+      $("#shipping_address_list div.address").each(function(i, e) {
+        $(this).removeClass("selected");
+      });
+
+      $(this).addClass("selected");
+      $("#shipping_address_id").val(aid);
+    });
+
+    #if ($addresses.isEmpty())
+    $("#new_billing_address_div").hide();
+    $("#new_shipping_address_div").hide();
+    #end
+
+    $("#new_billing_address_checkbox").trigger("change");
+    $("#new_shipping_address_checkbox").trigger("change");
+    $("#new_account_checkbox").trigger("change");
+
+    #if ($checkout.billingAddress.region)
+    loadBillingRegionInputs($("select.billing-address-country").val(),
+        $checkout.billingAddress.region.id);
+    $("tr.billing-address-region-select select").val($checkout.billingAddress.region.id);
+    #else
+    loadBillingRegionInputs($("select.billing-address-country").val(), 0);
+    #end
+
+    #if ($checkout.shippingAddress.region)
+    loadShippingRegionInputs($("select.shipping-address-country").val(),
+        $checkout.shippingAddress.region.id);
+    $("tr.shipping-address-region-select select").val($checkout.shippingAddress.region.id);
+    #else
+    loadShippingRegionInputs($("select.shipping-address-country").val(), 0);
+    #end
+
+    $("#same_as_billing").trigger("change");
+    $("#email").trigger("change");
+  });
+</script>
+
+<div class="checkout-header">
+  <h2>Express Checkout</h2>
+  <p>Please enter your details below to complete your purchase.</p>
+  <a href="#">Already registered? Click here to login.</a>
+  #objectErrors("checkout")
+</div>
+
+<div class="checkout-col1">
+  <h3>Billing Address</h3>
+  
+  #springBind("checkout.firstName")
+  <label for="first_name">First Name</label>
+  <input type="text" name="$status.expression" value="$!status.value">
+  #fieldErrors()
+  
+  #springBind("checkout.lastName")
+  <label for="first_name">Last Name</label>
+  <input type="text" name="$status.expression" value="$!status.value">
+  #fieldErrors()
+  
+  #springBind("checkout.email")
+  <label for="email_address">Email Address</label>
+  <input type="text" name="$status.expression" value="$!status.value">
+  #fieldErrors()
+  
+  #springBind("checkout.emailConfirm")
+  <label for="confirm_email">Confirm Email</label>
+  <input type="text" name="$status.expression" value="$!status.value">
+  #fieldErrors()
+  
+  #springBind("checkout.phone")
+  <label for="phone_number">Phone Number</label>
+  <input type="text" name="$status.expression" value="$!status.value">
+  #fieldErrors()
+  
+  
+  
+  
+</div>
+
+<div class="checkout-col2">
+  <h3>Shipping Method</h3>
+</div>
+
+<div class="checkout-col3">
+  <h3>Review Your Order</h3>
+</div>
+
+
+
+<div class="checkout checkout-info">
+
+  
+
+  <form method="post" action="#springUrl('/checkout')">
+
+    #if ($auth.isEmpty())
+    <h3>Contact Information</h3>
+
+    <p>Please <a href="#springUrl('/login')">log in</a> if you already have an account.
+
+    <table class="form checkout contact">
+
+
+
+
+
+      #springBind("checkout.firstName")
+      <tr class="#fieldErrorClass()">
+        <td>
+
+        </td>
+      </tr>
+
+      #springBind("checkout.lastName")
+      <tr class="#fieldErrorClass()">
+        <td>
+
+        </td>
+      </tr>
+
+      #springBind("checkout.phone")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Phone Number</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+    </table>
+    #end
+
+
+    <h3>Credit Card</h3>
+
+    <table class="form checkout card">
+
+<!--
+      ##springBind("checkout.cardType")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Select Card Type</div>
+          <select name="$status.expression">
+            ##foreach ($t in $cardTypes)
+            <option value="$t.code"
+                ##if ("$t.code" == "$!status.value")
+                  selected="selected"
+                ##end >$t.description</option>
+            ##end
+          </select>
+          ##fieldErrors()
+        </td>
+      </tr>
+-->
+
+      #springBind("checkout.cardNumber")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Enter Card Number</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.cardCode")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Enter Security Code</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Enter Expiration Date</div>
+
+          #springBind("checkout.cardExprMonth")
+          <select name="$status.expression">
+            #foreach ($p in $cardExprMonths)
+            <option value="$p.b"
+                #if ("$p.b" == "$!status.value") selected="selected" #end >$p.a</option>
+            #end
+          </select>
+          #fieldErrors()
+
+          #springBind("checkout.cardExprYear")
+          <select name="$status.expression">
+            #foreach ($p in $cardExprYears)
+            <option value="$p.b"
+                #if ("$p.b" == "$!status.value") selected="selected" #end >$p.a</option>
+            #end
+          </select>
+          #fieldErrors()
+
+        </td>
+      </tr>
+
+    </table>
+
+    <h3>Billing Address</h3>
+
+    #if ($addresses.isDefined())
+    <div id="billing_address_list" class="form billing checkout address-list">
+
+      #springBind("checkout.billingAddressId")
+      <input id="billing_address_id" type="hidden" name="$status.expression"
+          value="$!status.value"/>
+
+      #foreach ($a in $addresses.get())
+        <div class="address" address-id="$a.id">
+        #address($a)
+        </div>
+      #end
+
+    </div>
+    <div style="clear: left;"></div>
+    #end
+
+    <div id="new_billing_address_div">
+      #springBind("checkout.createNewBillingAddress")
+      <input name="_${status.expression}" type="hidden" value="on"/>
+      <input id="new_billing_address_checkbox" name="$status.expression" type="checkbox"
+          #if ($status.value)
+            checked="checked"
+          #end />
+      <label for="new_billing_address_checkbox">Create a new address</label>
+    </div>
+
+    <div id="new_billing_address">
+    <table class="form billing checkout address">
+
+      #springBind("checkout.billingAddress.firstName")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">First Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.lastName")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Last Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.line1")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Address</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          <div class="help">Street Address or PO Box</div>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.line2")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          <div class="help">Company, C/O, Apt, Suite, Unit, Building, Floor</div>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.city")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">City</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.regionName")
+      <tr class="#fieldErrorClass() billing-address-region-input">
+        <td>
+          <div class="label">Region</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.region")
+      <tr class="#fieldErrorClass() billing-address-region-select">
+        <td>
+          <div class="label">Region</div>
+          <select name="$status.expression">
+          </select>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.postalCode")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Postal Code</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.billingAddress.country")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Country</div>
+          <select class="billing-address-country" name="$status.expression">
+            #foreach ($c in $countries)
+            <option value="$c.id"
+                #if ("$c.id" == "$!status.value")
+                  selected="selected"
+                #end >$c.name</option>
+            #end
+          </select>
+          #fieldErrors()
+        </td>
+      </tr>
+
+    </table>
+    </div>
+
+    <h3>Shipping Address</h3>
+
+    #if ($addresses.isDefined())
+    <div id="shipping_address_list" class="form shipping checkout address-list">
+
+      #springBind("checkout.shippingAddressId")
+      <input id="shipping_address_id" type="hidden" name="$status.expression"
+          value="$!status.value"/>
+
+      #foreach ($a in $addresses.get())
+        <div class="address abc123" address-id="$a.id">
+        #address($a)
+        </div>
+      #end
+
+    </div>
+    <div style="clear: left;"></div>
+    #end
+
+    <div>
+      #springBind("checkout.shippingSameAsBilling")
+      <input name="_${status.expression}" type="hidden" value="on"/>
+      <input id="same_as_billing" type="checkbox" name="$status.expression"
+          #if ($status.value) checked="checked" #end />
+      <label for="same_as_billing">Same as Billing Address</label>
+    </div>
+
+    <div id="new_shipping_address_div">
+      #springBind("checkout.createNewShippingAddress")
+      <input name="_${status.expression}" type="hidden" value="on"/>
+      <input id="new_shipping_address_checkbox" name="$status.expression" type="checkbox"
+          #if ($status.value)
+            checked="checked"
+          #end />
+      <label for="new_shipping_address_checkbox">Create a new address</label>
+    </div>
+
+    <div id="new_shipping_address">
+    <table class="form checkout address">
+
+      #springBind("checkout.shippingAddress.firstName")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">First Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.lastName")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Last Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.line1")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Address</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          <div class="help">Street Address or PO Box</div>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.line2")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          <div class="help">Company, C/O, Apt, Suite, Unit, Building, Floor</div>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.city")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">City</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.regionName")
+      <tr class="#fieldErrorClass() shipping-address-region-input">
+        <td>
+          <div class="label">Region</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.region")
+      <tr class="#fieldErrorClass() shipping-address-region-select">
+        <td>
+          <div class="label">Region</div>
+          <select name="$status.expression">
+          </select>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.postalCode")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Postal Code</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.shippingAddress.country")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Country</div>
+          <select class="shipping-address-country" name="$status.expression">
+            #foreach ($c in $countries)
+            <option value="$c.id"
+                #if ("$c.id" == "$!status.value")
+                  selected="selected"
+                #end >$c.name</option>
+            #end
+          </select>
+          #fieldErrors()
+        </td>
+      </tr>
+
+    </table>
+    </div>
+
+    #if ($auth.isEmpty())
+    <h3>Sign Me Up!</h3>
+
+    <div id="new_account_div">
+      #springBind("checkout.createAccount")
+      <input name="_${status.expression}" type="hidden" value="on"/>
+      <input id="new_account_checkbox" name="$status.expression" type="checkbox"
+          #if ($status.value)
+            checked="checked"
+          #end />
+      <label for="new_account_checkbox">Create a new account</label>
+    </div>
+
+    <div id="new_account">
+    <table class="form checkout register">
+
+      <tr>
+        <td>
+          <div class="label">Email Address</div>
+          <input id="register_email" type="text" disabled="disabled"/>
+        </td>
+      </tr>
+
+      #springBind("checkout.password")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Password</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("checkout.passwordConfirm")
+      <tr class="#fieldErrorClass()">
+        <td>
+          <div class="label">Confirm Password</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+    </table>
+    </div>
+    #end
+
+    <div class="buttons">
+      <input type="submit" value="Save & Continue"/>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,58 @@
+<div class="search-results">
+
+  <h2>Search Results</h2>
+
+  #if ($results.totalSize == 0)
+    <p>No results were found</p>
+  #else
+
+    <div>
+      Results <b>$displayOffset - $displayEnd</b> of <b>$count</b> for <b>$q</b>
+    </div>
+
+    <div class="pager">
+    #set ($i = 0)
+    #set ($page = 1)
+
+    #if ($pageCount > 1)
+      #foreach ($page in [1..$pageCount])
+        #if ($i == $offset)
+        <span class="current-page">$page</span>
+        #else
+        <a href="#springUrl('/search')?q=$q&o=$i">$page</a>
+        #end
+        #set ($i = $i + $limit)
+        #set ($page = $page +1)
+      #end
+    #end
+    </div>
+
+
+    <div class="product-list">
+    #foreach ($r in $results.results)
+      #set ($p = $r.obj)
+      <div class="clickable product" product-id="$p.id">
+        #if (!$p.images.isEmpty())
+          #productImagePreset($p.images.get(0), "Thumb")
+        #end
+        <p>$p.name</p>
+      </div>
+    #end
+    </div>
+
+    <div style="clear: left; float: right;">
+    #if ($offset > 0)
+      #set ($i = $offset - $limit)
+      #if ($offset < 0) #set ($offset = 0) #end
+      <a href="#springUrl('/search')?q=$q&o=$i">&lt;PREV</a>
+    #end
+
+    #set ($i = $offset + $limit)
+    #if ($i < $count)
+      <a href="#springUrl('/search')?q=$q&o=$i">NEXT&gt;</a>
+    #end
+    </div>
+
+  #end
+
+</div>

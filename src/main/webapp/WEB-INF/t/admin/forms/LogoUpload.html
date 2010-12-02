@@ -1,0 +1,25 @@
+<form action="#springUrl('/admin/upload-logo')" method="post" enctype="multipart/form-data">
+
+  <table class="form upload">
+
+    <tr class="required">
+      <div class="label">Logo Image</div>
+      <input name="logo" type="file"/>
+    </tr>
+
+    <tr class="required">
+      <div class="label">Preset</div>
+      <select name="presetId">
+        #foreach ($p in $presets)
+        <option value="$p.id">$p.name</option>
+        #end
+      </select>
+    </tr>
+
+    <tr class="buttons">
+      <input type="submit" value="Upload"/>
+    </tr>
+
+  </table>
+
+</form>

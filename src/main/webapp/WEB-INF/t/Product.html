@@ -1,0 +1,151 @@
+<script type="text/javascript">
+  $(function() {
+    $("div.product-image-list ul li").click(function(evt) {
+      var fis = $(this).attr("full-img-src");
+      $("#product_image img").attr("src", fis);
+    });
+
+    $("li.variation").click(function(evt) {
+      var varId = $(this).attr("variation-id");
+      var unitId = $(this).attr("unit-id");
+      $("h2.price").hide();
+      $("li.variation").removeClass("selected");
+      $("h2.price[variation-id="+varId+"]").show();
+      $("li.variation[variation-id="+varId+"]").addClass("selected");
+
+      $("form.add-to-cart input[name=unit.id]").val(unitId);
+    });
+
+    $("#add_to_cart").click(function() {
+      var data = $("form.add-to-cart").serialize();
+      var url = $("form").attr("action");
+      jQuery.post(url, data, function() {
+          $("#cart").dialog({
+            title: "Cart",
+            open: function(evt, ui) {
+              $(this).load("#springUrl('/cart')", null, function() {
+                var w = $(this).attr("scrollWidth");
+                $("#cart").dialog("option", "width", w);
+                $("#cart").dialog("option", "position", "center");
+              });
+            },
+            modal: true
+          });
+      });
+    });
+
+    var t = $product.units.get(0).size.id;
+    var uid = $product.units.get(0).id;
+    $("h2.price[variation-id="+t+"]").show();
+    $("li.variation[variation-id="+t+"]").addClass("selected");
+    $("form.add-to-cart input[name=unit.id]").val(uid);
+  });
+</script> 
+
+  <h2 class='title'>$product.name</h2>
+
+  <div class="col1">
+    <div class="product-images">
+      <div id="product_image">
+        #if (!$product.images.isEmpty())
+          #productImagePreset($product.images.get(0) "Full")
+        #end
+      </div>
+
+      <!--
+        TODO modify the image thumbnails so that they display as cropped squares
+      -->
+
+      #if ($product.images.size() > 1)
+      <div class="product-image-list">
+        <ul>
+          #foreach ($i in $product.images)
+          #set ($presetOpt = $i.preset("Full"))
+          <li full-img-src="#imageUrl($MAxConfig.productImagePresetPath($i, $presetOpt.get()))">
+            #productImagePreset($i "Mini")
+          </li>
+          #end
+        </ul>
+      </div>
+      #end
+    </div>
+
+    #foreach ($u in $product.units)
+      <h2 variation-id="$u.size.id" class="price" style="display: none;">#money($u.price)</h2>
+    #end
+
+    <h3 id="add_to_cart">ADD TO CART</h3>
+
+    #if ($product.isSizeVariable)
+    <ul class="options">
+      #foreach ($u in $product.units)
+        <li variation-id="$u.size.id" unit-id="$u.id" class="variation">$u.size.name</li>
+      #end
+    </ul>
+    #end
+
+  </div><!-- End Col1 -->
+  <div class="col2">
+    <div class="product-description">
+      $product.description
+    </div>
+    <!-- AddThis Button BEGIN -->
+    <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=tenclub"></script>
+    <!-- AddThis Button END -->
+    
+    <div class="addthis_toolbox addthis_default_style">
+      <a class="addthis_button_facebook"></a>
+      <a class="addthis_button_twitter"></a>    
+      <a class="addthis_button_email"></a>
+    </div>
+    
+  </div><!-- End Col2 -->
+
+
+  <div style="clear: left;"></div>
+  
+  #if (!$product.attachments.isEmpty())
+  <div class="attachments">
+    <h3>Attachments</h3>
+
+    #foreach ($a in $product.attachments)
+    <div class="attachment">
+  
+
+      #if ($a.title)
+      <a href="#productAttachmentUrl($a)">$a.title</a>
+      #else
+      <a href="#productAttachmentUrl($a)">$a.name</a>
+      #end
+
+      #if ($a.description)
+      <div class="attachment-description">$a.description</div>
+      #end
+
+    </div>
+    #end
+  </div>
+  #end
+
+  #if (!$product.related.isEmpty())
+  <div class="related-items product-list">
+    <h3>Related Items</h3>
+    #foreach ($r in $product.related)
+    #set ($rp = $productQuery.findProductById($r.relatedProductId))
+    <div class="related-item clickable product" product-id="$rp.id">
+      #if (!$p.images.isEmpty())
+        #productImagePreset($rp.images.get(0), "Mini")
+      #end
+      <p>$rp.name</p>
+    </div>
+    #end
+  </div>
+  #end
+
+<form action="#springUrl('/add-to-cart')" class="add-to-cart">
+  <input type="hidden" name="qty" value="1"/>
+  <input type="hidden" name="unit.id" value=""/>
+</form>
+
+<div id="cart"></div>

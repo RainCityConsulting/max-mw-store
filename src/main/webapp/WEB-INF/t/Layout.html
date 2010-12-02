@@ -1,0 +1,72 @@
+<html>
+
+  <head>
+    #if ($product.name)
+      <title>$product.name</title>
+      <meta property="og:title" content="$product.name" />
+      <meta property="og:description" content="$product.name" />
+      <meta property="og:image" content='#productImagePresetUrl($product.images.get(0) "Mini")' />
+    #end
+    
+    
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/reset.css')">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/style.css')">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/jquery-ui-1.8.4.custom.css')">
+
+    <script type="text/javascript">
+      var MAx;
+      if (!MAx) MAx = {};
+      MAx.context = "$springMacroRequestContext.contextPath";
+    </script>
+
+    <script type="text/javascript" src="#springUrl('/js/jquery-1.4.2.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/jquery-ui-1.8.4.custom.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/Dialog.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/FormDialog.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/Clickable.js')"></script>
+  </head>
+
+  <body>
+
+    <div id="wrap">
+      
+      <div id="header"></div>
+      <!-- Load the header content -->
+      <script type="text/javascript" charset="utf-8">
+        $('#header').load('/ #header');
+      </script>
+
+      <div class="content">
+        #parse("${content}.html")
+      </div>
+
+      <div class="footer">
+      </div>
+
+    </div><!-- End Wrap -->
+     <div class="clear"></div>
+
+    #if ($showTopDialog)
+      <script type="text/javascript">
+        $(function() {
+          $("#top_dialog").dialog({
+            title: "Cart",
+            open: function(evt, ui) {
+              $(this).load("#springUrl('')$dialogPath", null, function() {
+                var w = $(this).attr("scrollWidth");
+                $("#top_dialog").dialog("option", "width", w);
+                $("#top_dialog").dialog("option", "position", "center");
+              });
+            },
+            modal: true
+          });
+        });
+      </script>
+
+      <div id="top_dialog" style="display: none;"></div>
+    #end
+
+    #parse("includes/Flash.html")
+  </body>
+
+</html>

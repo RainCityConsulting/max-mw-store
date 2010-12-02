@@ -1,0 +1,34 @@
+<form action="#springUrl('/admin/upload-cat-image')" method="post" enctype="multipart/form-data">
+
+  <table class="form upload">
+
+    <tr class="required">
+      <div class="label">Image</div>
+      <input name="file" type="file"/>
+    </tr>
+
+    <tr class="required">
+      <div class="label">Category</div>
+      <select name="id">
+        #foreach ($c in $cats)
+        <option value="$c.id">$c.description</option>
+        #end
+      </select>
+    </tr>
+
+    <tr class="required">
+      <div class="label">Preset</div>
+      <select name="presetId">
+        #foreach ($p in $presets)
+        <option value="$p.id">$p.name</option>
+        #end
+      </select>
+    </tr>
+
+    <tr class="buttons">
+      <input type="submit" value="Upload"/>
+    </tr>
+
+  </table>
+
+</form>

@@ -1,0 +1,48 @@
+<html>
+
+  <head>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/reset.css')">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/style.css')">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/css/jquery-ui-1.8.4.custom.css')">
+
+    <script type="text/javascript" src="#springUrl('/js/jquery-1.4.2.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/jquery-ui-1.8.4.custom.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/js/FormDialog.js')"></script>
+  </head>
+
+  <body>
+
+    <div id="top">
+
+      <div class="header">
+        #if ($config.logoImagePath.isDefined())
+          <a href="#springUrl('/')">#image($config.logoImagePath.get().value "class='logo'")</a>
+        #end
+
+        <h1 class="name">Admin</h1>
+
+        #if ($user.isDefined())
+        <div class="logged-in">
+          Logged in as $user.get().name
+        </div>
+        #end
+
+        <div class="menu">
+        </div>
+
+      </div>
+
+      <div style="clear: both;"></div>
+
+      <div class="content">
+        #parse("${content}.html")
+      </div>
+
+      <div class="footer">
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

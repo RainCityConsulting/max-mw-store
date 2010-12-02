@@ -1,0 +1,26 @@
+<script type="text/javascript">
+/*
+  $(function() {
+    $("div.product-list div.product[product-id]").click(function(evt) {
+      var id = $(this).attr("product-id")
+      window.location.href = "#springUrl('/products/')" + id;
+    });
+  });
+*/
+</script>
+
+<h2>$cat.description</h2>
+
+<div class="product-list">
+#foreach ($p in $products)
+  <div class="clickable product product-item" product-id="$p.id">
+    #if (!$p.images.isEmpty())
+      #productImagePreset($p.images.get(0), "Thumb")
+    #end
+    <p>$p.name</p>
+  </div>
+#end
+</div>
+<div class="clear">
+  
+</div>

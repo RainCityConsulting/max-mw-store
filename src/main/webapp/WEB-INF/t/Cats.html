@@ -1,0 +1,11 @@
+<ul class="cat-list">
+#foreach ($c in $cats)
+  <li class="clickable cat" cat-id="$c.id">
+    #if ($catImagePaths.get("$c.id"))
+      #image($catImagePaths.get("$c.id"))
+    #end
+
+    $c.description
+  </li>
+#end
+</ul>

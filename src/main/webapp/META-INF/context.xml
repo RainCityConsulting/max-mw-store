@@ -1,0 +1,4 @@
+<Context reloadable="false" docBase="@tomcat.doc.base@">
+  <Manager className="org.apache.catalina.session.StandardManager" distributable="true"
+      pathname=""/>
+</Context>

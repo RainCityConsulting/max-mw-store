@@ -1,0 +1,131 @@
+<script src="#springUrl('/dwr/engine.js')" type="text/javascript"></script>
+<script src="#springUrl('/dwr/interface/AddressQuery.js')" type="text/javascript"></script>
+
+<script type="text/javascript">
+  $(function() {
+    $("select.country").change(function(evt) {
+      AddressQuery.findRegionsByCountry(this.value, function(regions) {
+        if (regions.length == 0) {
+          $("tr.address-region-select").hide();
+          $("tr.address-region-input").show();
+        } else {
+          var opts = '';
+          for (var i = 0; i < regions.length; i++) {
+            var r = regions[i];
+            opts += '<option value="'+r.id+'">'+r.name+'</option>'
+          }
+
+          $("tr.address-region-select select").empty().append(opts);
+
+          $("tr.address-region-select").show();
+          $("tr.address-region-input").hide();
+        }
+      });
+    });
+
+    $("select.country").trigger("change");
+  });
+</script>
+
+<form method="post" action="#springUrl('/profile/address/edit')">
+
+  <table class="form address">
+
+    #springBind("a.firstName")
+    <tr class="#formErrorClass()">
+      <td>
+        <div class="label">First Name</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.lastName")
+    <tr class="#formErrorClass()">
+      <td>
+        <div class="label">Last Name</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.line1")
+    <tr class="#formErrorClass()">
+      <td>
+        <div class="label">Line 1</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.line2")
+    <tr class="#formErrorClass()">
+      <td>
+        <div class="label">Line 2</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.city")
+    <tr class="#fieldErrorClass()">
+      <td>
+        <div class="label">City</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.regionName")
+    <tr class="#fieldErrorClass() address-region-input">
+      <td>
+        <div class="label">Region</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.region")
+    <tr class="#fieldErrorClass() address-region-select">
+      <td>
+        <div class="label">Region</div>
+        <select name="$status.expression">
+        </select>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.postalCode")
+    <tr class="#fieldErrorClass()">
+      <td>
+        <div class="label">Postal Code</div>
+        <input type="text" name="$status.expression" value="$!status.value"/>
+        #fieldErrors()
+      </td>
+    </tr>
+
+    #springBind("a.country")
+    <tr class="#fieldErrorClass()">
+      <td>
+        <div class="label">Country</div>
+        <select class="country" name="$status.expression">
+          #foreach ($c in $countries)
+          <option value="$c.id"
+              #if ("$c.id" == "$!status.value")
+                selected="selected"
+              #end >$c.name</option>
+          #end
+        </select>
+        #fieldErrors()
+      </td>
+    </tr>
+
+      <tr class="buttons">
+        <td>
+          <input type="submit" value="Submit"/>
+        </td>
+      </tr>
+
+  </table>
+
+</form>

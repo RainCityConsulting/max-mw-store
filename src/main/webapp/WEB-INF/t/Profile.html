@@ -1,0 +1,139 @@
+<script type="text/javascript">
+  $(function() {
+    $("#update_password_checkbox").change(function(e) {
+      if ($(this).attr("checked")) {
+        $("tr.password").show();
+      } else {
+        $("tr.password").hide();
+      }
+    });
+
+    $("#update_password_checkbox").trigger("change");
+  });
+</script>
+
+<div class="profile">
+
+  <h2>Profile</h2>
+
+  <form method="post" action="#springUrl('/profile')">
+
+    <table class="form profile">
+
+      #springBind("p.firstName")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">First Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.lastName")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Last Name</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.phone")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Phone Number</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.email")
+      <tr class="#formErrorClass()">
+        <td>
+          <div class="label">Email</div>
+          <input type="text" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.updatePassword")
+      <tr class="#formErrorClass()">
+        <td>
+          <input id="update_password_checkbox" type="checkbox" name="$status.expression"
+              #if ($status.value) checked="checked" #end />
+          <input type="hidden" name="_${status.expression}"/>
+          <label for="update_password_checkbox">Update Password</label>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.password")
+      <tr class="password #formErrorClass()">
+        <td>
+          <div class="label">Password</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      #springBind("p.passwordConfirm")
+      <tr class="password #formErrorClass()">
+        <td>
+          <div class="label">Password Confirm</div>
+          <input type="password" name="$status.expression" value="$!status.value"/>
+          #fieldErrors()
+        </td>
+      </tr>
+
+      <tr class="buttons">
+        <td>
+          <input type="submit" value="Update"/>
+        </td>
+      </tr>
+
+    </table>
+
+  </form>
+
+
+
+  <h2>Addresses</h2>
+
+  <ul class="menu">
+    <li><a href="#springUrl('/profile/address/edit')">+ Add Address</a></li>
+  </ul>
+
+  <div class="address-list">
+    #foreach ($a in $addresses)
+    #if ($a.isActive)
+    <div class="address">
+      #address($a)
+      <ul class="menu">
+        #if ($auth.get().principal.visitor.primaryAddress.id != $a.id)
+        <li><a href="#springUrl('/profile/address/')${a.id}/set-as-primary">Primary</a></li>
+        <li><a href="#springUrl('/profile/address/')${a.id}/delete">Delete</a></li>
+        #end
+      </ul>
+    </div>
+    #end
+    #end
+  </div>
+
+
+  #if (!$orders.isEmpty())
+  <h2>Orders</h2>
+
+  <table class="list">
+    #foreach ($o in $orders)
+    <tr>
+      <td><a href="#springUrl('/profile/orders/')$o.id">$o.externalId</a></td>
+      <td>#date($o.creationDate)</td>
+      <td>#money($o.total().asMoney())</td>
+    </tr>
+    #end
+  </table>
+  #end
+
+</div>
+
+</div>

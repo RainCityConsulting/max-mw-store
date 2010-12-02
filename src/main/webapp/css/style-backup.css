@@ -1,0 +1,140 @@
+@import "reset.css";
+@import "jquery-ui-1.8.4.custom.css";
+
+body {
+  background: #000 url(images/hr.png) repeat-x;
+  font-family: "Helvetica Neue", Helvetica;
+  color: #fff;
+}
+.clickable {
+  cursor: pointer;
+}
+div.index {
+  min-height: 300px;
+}
+#wrap {
+  margin: 0 auto;
+  width: 960px;
+  background: url(images/bg1.jpg) no-repeat 0 94px;
+}
+.menu {
+  text-transform: uppercase;
+  float: left;
+  margin: 0; padding: 0;
+}
+.menu li {
+  padding: 5px;
+}
+.menu li a, .menu li {
+ float: left;
+}
+.menu li {
+  margin-right: 20px;
+  font-size: 18px;
+  list-style: none;
+  position: relative;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #fff;
+}
+.menu li ul {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  padding: 5px; margin: 0;
+}
+.menu li ul li {
+  font-family: 'HelveticaNeue-CondensedBold', 'Helvetica Neue Bold Condensed', "Helvetica Neue";
+  font-weight: bold;
+  font-stretch: condensed;
+  font-size: 42px;
+  margin: 0;
+  padding: 0;
+  line-height: 34px;
+  letter-spacing: 10px;
+}
+
+.menu li ul li a:hover {
+  color: #000;
+}
+
+
+/* Submenu */
+
+.hasChildren {
+	position: absolute;
+	width: 5px; height: 5px;
+	background: black;
+	right : 0;
+	bottom: 0;
+}
+
+
+.menu li:hover > ul {
+ display: block;
+}
+
+.menu li ul li, .menu li ul li a {
+ float: none;
+}
+.menu li ul {
+  background: rgba(0, 0, 0, 0.6);
+  width: 940px;
+}
+.menu li ul li {
+ _display: inline; /* for IE6 */
+
+}
+.menu li ul li a {
+ display: block;
+}
+
+/* SUBSUB Menu */
+
+.menu li ul li ul {
+ display: none;
+}
+
+.menu li ul li:hover ul {
+ left: 100%;
+ top: 0;
+}
+.menu li ul li:hover {
+  color: #666;
+}
+div.content {
+  margin: 40px 15px 15px 15px;
+}
+.col1 {
+  float: left;
+}
+.col2 {
+  width: 410px;
+  padding-left: 15px;
+  float: left;
+}
+.product h2 {
+  font-size: 36px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+.product-image-list ul li {
+  float: right;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+ul.options li {
+  display: block;
+  float: left;
+  padding: 5px 0;
+  margin: 0 1px;
+  border: 1px solid #fff;
+}
+.selected {
+  background: #666;
+}

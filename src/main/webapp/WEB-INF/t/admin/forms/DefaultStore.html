@@ -1,0 +1,22 @@
+<form action="#springUrl('/admin/update-default-store')" method="post">
+
+  <table class="form">
+
+    <tr class="required">
+      <div class="label">Default Store</div>
+      <select name="id">
+        #foreach ($s in $stores)
+        <option value="$s.id"
+            #if ($config.defaultStore.isDefined() && "$config.defaultStore.get().id" == "$!s.id")
+              selected="selected" #end >$s.name()</option>
+        #end
+      </select>
+    </tr>
+
+    <tr class="buttons">
+      <input type="submit" value="Submit"/>
+    </tr>
+
+  </table>
+
+</form>

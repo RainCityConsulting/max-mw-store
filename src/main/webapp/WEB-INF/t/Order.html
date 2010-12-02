@@ -1,0 +1,88 @@
+<div class="profile order profile-order">
+
+  <h2>Order $o.externalId</h2>
+
+  <table class="view">
+
+    <tr>
+      <th>Date</th>
+      <td>#date($o.creationDate)</td>
+    </tr>
+    <tr>
+      <th>Product Subtotal</th>
+      <td>#money($o.itemTotal())</td>
+    </tr>
+    <tr>
+      <th>Shipping</th>
+      <td>#money($o.shippingPrice)</td>
+    </tr>
+    <tr>
+      <th>Tax</th>
+      <td>#money($o.tax)</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td class="total">#money($o.total())</td>
+    </tr>
+
+  </table>
+
+  <div class="bill-to-address">
+    <h4>Bill To:</h4>
+    <div class="address">
+      #address($o.billingAddress)
+    </div>
+  </div>
+
+  <div class="ship-to-address">
+    <h4>Ship To:</h4>
+    <div class="address">
+      #address($o.shippingAddress)
+    </div>
+  </div>
+
+  <div class="items">
+
+    <table class="list">
+      <tr>
+        <th>Product</th>
+        <th class="numeric">Item #</th>
+        <th class="currency">Unit Price</th>
+        <th>Qty</th>
+        <th class="currency">Total</th>
+      </tr>
+
+      #foreach ($i in $o.items)
+      #set ($p = $productQuery.findProductByUnit($i.unit.id))
+      <tr>
+
+        <td>
+          <a href="#springUrl('/products/')${p.id}">$p.displayName($i.unit.id)</a>
+        </td>
+
+        <td class="numeric">$p.sku</td>
+
+        <td class="currency">#money($i.pricePerUnit)</td>
+
+        <td class="numeric">$i.quantity</td>
+
+        <td class="currency">
+          #if ($i.isDiscounted())
+          #else
+            #money($i.total(true, false, false))
+          #end
+        </td>
+
+      </tr>
+      #end
+
+      <tr>
+        <th colspan="4" style="text-align: right;">Product Subtotal</th>
+        <td class="total">#money($o.itemTotal())</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>

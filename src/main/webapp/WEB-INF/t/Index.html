@@ -1,0 +1,20 @@
+<div class="index">
+
+  <!-- <ul class="cat-list">
+  #foreach ($c in $cats)
+    <li class="clickable cat" cat-id="$c.id">
+      #if ($catImagePaths.get("$c.id"))
+        #image($catImagePaths.get("$c.id"))
+      #end
+
+      $c.description
+    </li>
+  #end
+  </ul> -->
+
+  #if ($config.frontPage.isDefined())
+  	<div class="front-page">$config.frontPage.get().value</div>
+  #end
+
+  <div style="clear: both;"></div>
+</div>

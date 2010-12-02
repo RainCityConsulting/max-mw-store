@@ -1,0 +1,83 @@
+<h1>MAx Store Admin</h1>
+
+<div class="caches">
+<p><a href="#springUrl('/admin/reset-all-caches')">Reset All Caches</a></p>
+</div>
+
+<div class="logo">
+  <h3>Logo</h3>
+  #if ($config.logoImagePath.isDefined())
+    #image($config.logoImagePath.get().value)
+    <p>
+      <a class="dialog form"
+          dialog-content-url="#springUrl('/admin/upload-logo')"
+          dialog-title="Upload Logo"
+          dialog-noajax="true">Update logo</a>.
+    </p>
+
+  #else
+    <p>
+      Logo is not set. You may
+      <a class="dialog form"
+          dialog-content-url="#springUrl('/admin/upload-logo')"
+          dialog-title="Upload Logo"
+          dialog-noajax="true">upload a logo</a>.
+    </p>
+  #end
+</div>
+
+<div class="name">
+  <h3>Name</h3>
+  #if ($config.name.isDefined())
+    Name: $config.name.get().value
+    <a class="dialog form"
+        dialog-content-url="#springUrl('/admin/update-name')"
+        dialog-title="Name">Update name</a>.
+  #else
+    <a class="dialog form"
+        dialog-content-url="#springUrl('/admin/update-name')"
+        dialog-title="Name">Set name</a>.
+  #end
+  </div>
+
+<div class="default-store">
+  <h3>Default Store</h3>
+  #if ($config.defaultStore.isDefined())
+  <table class="">
+    <tr>
+      <th>Default Store</th>
+      <td>$config.defaultStore.get().name()</td>
+      <td>
+        <a class="dialog form"
+            dialog-content-url="#springUrl('/admin/update-default-store')"
+            dialog-title="Default Store">Update</a>.
+      </td>
+    </tr>
+  </table>
+  #else
+  <p>
+    No default store is set. You may
+    <a class="dialog form"
+        dialog-content-url="#springUrl('/admin/update-default-store')"
+        dialog-title="Default Store">set the default store</a>.
+  </p>
+  #end
+</div>
+
+<div class="cat-images">
+  <h3>Category Images</h3>
+  <p>
+    <a class="dialog form"
+        dialog-content-url="#springUrl('/admin/upload-cat-image')"
+        dialog-title="Default Store"
+        dialog-noajax="true">Upload a category image</a>.
+  </p>
+</div>
+
+<div class="">
+  <h3>Front Page</h3>
+  <a class="dialog form"
+      dialog-content-url="#springUrl('/admin/update-front-page')"
+      dialog-title="Front Page"
+      dialog-noajax="true">Edit</a>.
+</div>

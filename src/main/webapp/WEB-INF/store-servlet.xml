@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+          
+<beans
+  xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+      http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+  <context:component-scan base-package="com.max.rcc.store.web.controller"/>
+  <context:component-scan base-package="com.max.rcc.store.web.propertyeditor"/>
+  <context:component-scan base-package="com.max.rcc.store.web.validation"/>
+
+  <bean id="conversionService"
+      class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+
+  <!-- VIEW CONFIGURATION -->
+  <bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+    <property name="resourceLoaderPath" value="/WEB-INF/t/"/>
+    <property name="velocityProperties">
+      <props>
+        <prop key="velocimacro.library">macros.vm</prop>
+        <prop key="velocimacro.library.autoreload">true</prop>
+        <prop key="velocity.file.resource.loader.cache">true</prop>
+        <prop key="runtime.introspector.uberspect">com.max.velocity.ScalaUberspect</prop>
+        <prop key="directive.foreach.counter.initial.value">0</prop>
+        <prop key="directive.foreach.counter.name">vidx</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+    <property name="cache" value="true"/>
+    <property name="prefix" value=""/>
+    <property name="suffix" value=".html"/>
+    <property name="exposeSpringMacroHelpers" value="true"/>
+  </bean>
+  <!-- END VIEW CONFIGURATION -->
+
+  <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <property name="interceptors">
+      <list>
+        <bean class="com.max.rcc.store.web.HandlerInterceptor" init-method="init"/>
+
+        <bean class="com.rcc.web.RequestLoggingHandlerInterceptor">
+          <property name="logHttpMethod" value="true"/>
+          <property name="logRequestParams" value="true"/>
+          <property name="logCookies" value="true"/>
+          <property name="logHttpHeaders" value="true"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="10000000"/>
+  </bean>
+
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename" value="messages"/>
+  </bean>
+
+</beans>
