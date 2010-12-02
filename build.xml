@@ -1,7 +1,7 @@
 <project name="max-mw-store" default="compile" basedir=".">
 
   <property name="name" value="max-mw-store"/>
-  <property name="catalina.base" value="${user.home}/opt/tomcat6"/>
+  <property name="catalina.base" value="/etc/tomcat6"/>
 
   <loadfile property="version" srcFile="${basedir}/.version">
     <filterchain>
@@ -54,7 +54,7 @@
   <target name="d" description="Quick deploy - no compile" depends="war-dir-impl"/>
 
   <target name="deploy" depends="war-dir">
-    <copy tofile="${catalina.base}/conf/Catalina/localhost/store.xml"
+    <copy tofile="${catalina.base}/Catalina/localhost/store.xml"
         file="target/${name}-${version}/META-INF/context.xml">
       <filterset>
         <filter token="tomcat.doc.base" value="${basedir}/target/${name}-${version}"/>
