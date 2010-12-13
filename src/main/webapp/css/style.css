@@ -8,6 +8,17 @@ body {
   background: #000 url(images/hr.png) repeat-x;
   font-family: "Helvetica Neue", Helvetica;
   color: #fff;
+
+}
+a {
+  color: #fff;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 10px;
+}
+h1 {
+  text-transform: uppercase;
+  font-size: 1.6em;
 }
 .clickable {
   cursor: pointer;
@@ -210,21 +221,115 @@ div.addthis_toolbox a:hover {
 /* ================= */
 /* = Checkout Page = */
 /* ================= */
+#expressCheckout {
+  width: 960px;
+  margin: 0 auto;
+}
 
-div.checkout-header {
-  width: 940px;
-  margin: 10px;
-  border-bottom: 1px solid #fff;
-  float: none;
+/* ========== */
+/* = Header = */
+/* ========== */
+
+#checkoutHeader {
+  border-bottom: 1px solid #999;
+  padding-bottom: 20px;
 }
-div.checkout-header a {
-  padding-bottom: 5px; 
+#checkoutHeader p {
+  margin-bottom: 20px;
+  font-size: 20px;
 }
-div.checkout-col1, div.checkout-col2, div.checkout-col3 {
-  width: 310px;
+
+/* =========== */
+/* = Columns = */
+/* =========== */
+#checkout-col1, #checkout-col2, #checkout-col3 {
   float: left;
-  padding: 5px;
 }
+#checkout-col1 {
+  padding-right: 20px;
+  padding-top: 20px;
+  width: 300px;
+}
+#checkout-col2 {
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  width: 300px;
+  padding: 20px;
+  
+}
+#checkout-col3 {
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 275px;
+}
+.step-1 {
+  background: url(step-1.jpg) no-repeat left center;
+}
+.step-2 {
+  background: url(step-2.jpg) no-repeat left center;
+}
+.step-3 {
+  background: url(step-3.jpg) no-repeat left center;
+}
+h1.step {
+  text-transform: uppercase;
+  vertical-align: middle;
+  padding: 10px 0 10px 50px;
+  margin-bottom: 20px;
+}
+h1.review {
+  text-transform: uppercase;
+  vertical-align: middle;
+  padding: 10px 0 10px 0;
+  margin-bottom: 20px;
+}
+td {
+  padding: 5px 20px 5px 0;
+}
+table h3 {
+  font-size: 1.4em;
+}
+input[type="text"], select {
+  width: 100%;
+  margin: 5px 0;
+}
+h1 #shipping_address {
+  padding-left: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#shipping_table input {
+  padding-left: 20px;
+}
+.expire select {
+  width: 50%;
+}
+select[name="expiration"] {
+  width: 60%;
+}
+select[name="year"] {
+  width: 30%;
+}
+table.order_review {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.order_review td, .order_review th {
+  padding: 10px 0;
+}
+.order_review th, .subtotal {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+.grandtotal {
+  border-bottom: 1px solid #fff;
+}
+.order_review td {
+  text-align: right;
+}
+
+
+
 
 
 
