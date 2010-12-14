@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <title>Express Checkout</title>
-  <link rel="stylesheet" href="reset.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-</head>
-<body>
+ <form id="asdfcheckout">
+  
+ </form>
   <div id="expressCheckout">
     <div id="checkoutHeader">
       <h1>Express Checkout</h1>
@@ -20,40 +14,40 @@
           <tr>
             <td>
               <label for="">First Name *</label>
-              <input type="text" name="first_name" value="" id="">
+              <input type="text" name="first_name" value="" id="" required="required">
             </td>
             <td>
               <label for="">Last Name *</label>
-              <input type="text" name="last_name" value="" id="">
+              <input type="text" name="last_name" value="" id="" required="required">
             </td>
           </tr>
           <tr>
             <td>
               <label for="">Email *</label>
-              <input type="text" name="first_name" value="" id="">
+              <input type="text" name="first_name" value="" id="" required="required">
             </td>
             <td>
               <label for="">Confirm Email *</label>
-              <input type="text" name="first_name" value="" id="">
+              <input type="text" name="first_name" value="" id="" required="required">
             </td>
           </tr>
             <td>
               <label for="">Telephone *</label>
-              <input type="text" name="first_name" value="" id="">
+              <input type="text" name="first_name" value="" id="" required="required">
             </td>
             <td></td>
           </tr>
           <tr>
             <td colspan="2">
               <label for="address">Address *</label>
-              <input type="text" name="address1" value="" id="">
+              <input type="text" name="address1" value="" id="" required="required">
               <input type="text" name="address2" value="" id="">
             </td>
           </tr>
           <tr>
             <td colspan="2">
               <label for="country">Country *</label>
-              <select name="country" id="some_name">
+              <select name="country" id="some_name" required="required">
                 <option value="usa">United States</option>
                 <option value="canada">Canada</option>
               </select>
@@ -62,17 +56,17 @@
           <tr>
             <td colspan="2">
               <label for="address">City *</label>
-              <input type="text" name="city" value="" id="">
+              <input type="text" name="city" value="" id="" required="required">
             </td>
           </tr>
           <tr>
             <td>
               <label for="zip">Zip Code *</label>
-              <input type="text" name="zip" value="" id="">
+              <input type="text" name="zip" value="" id="" required="required">
             </td>
             <td>
-              <label for="state">State</label>
-              <select name="state" id="state">
+              <label for="state">State *</label>
+              <select name="state" id="state" required="required">
                 <option value="usa">Washington</option>
                 <option value="canada">Idaho</option>
               </select>
@@ -237,7 +231,7 @@
         
       </div><!-- End col2 -->
       <div id="checkout-col3">
-        <h1 class="review">Billing Address</h1>
+        <h1 class="review">Review Order</h1>
         <table class="order_review">
           <tr>
             <th>Product</th>
@@ -267,10 +261,12 @@
         <h4>Enter your coupon code if you have one.</h4>
         <table>
           <tr>
-            <td>
-              <input type="text" name="" value="" id="">
+            <td class="coupon">
+              <input type="text" name="coupon_code" value="" id="">
             </td>
-            <td><button>Apply Coupon</button></td>
+            <td>
+              <input type="submit" name="" value="Apply Coupon" id="">
+            </td>
           </tr>
           <tr>
             <td colspan="2">
@@ -283,8 +279,12 @@
             </td>
           </tr>
         </table>
-        <button>Place Order</button>
+        <input type="submit" name="place_order" value="Place Order" id="">
       </div><!-- End col3 -->
     </div><!-- End columns -->
   </div>
-</body>
+  
+  </form>
+  <script type="text/javascript" charset="utf-8">
+    $("#asdfcheckout").validator();
+  </script>

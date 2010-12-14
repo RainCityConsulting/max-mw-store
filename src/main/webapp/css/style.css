@@ -253,23 +253,24 @@ div.addthis_toolbox a:hover {
 #checkout-col2 {
   border-left: 1px solid #999;
   border-right: 1px solid #999;
-  width: 300px;
+  width: 295px;
   padding: 20px;
   
 }
 #checkout-col3 {
   padding-left: 20px;
   padding-top: 20px;
-  width: 275px;
+  width: 280px;
 }
 .step-1 {
-  background: url(step-1.jpg) no-repeat left center;
+  background: url(http://com.monkeywrench.s3.amazonaws.com/step-1.jpg) no-repeat left center;
 }
 .step-2 {
-  background: url(step-2.jpg) no-repeat left center;
+  background: url(http://com.monkeywrench.s3.amazonaws.com/step-2.jpg) no-repeat left center;
 }
 .step-3 {
-  background: url(step-3.jpg) no-repeat left center;
+  background: url(http://com.monkeywrench.s3.amazonaws.com/step-3.jpg) no-repeat left center;
+  margin-top: 40px;
 }
 h1.step {
   text-transform: uppercase;
@@ -292,6 +293,8 @@ table h3 {
 input[type="text"], select {
   width: 100%;
   margin: 5px 0;
+  border: none;
+  padding: 5px;
 }
 h1 #shipping_address {
   padding-left: 0;
@@ -327,9 +330,26 @@ table.order_review {
 .order_review td {
   text-align: right;
 }
+input[type="submit"] {
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px;
+  
+  background: #45484d; /* old browsers */
+  background: -moz-linear-gradient(top, #45484d 0%, #000000 100%); /* firefox */
 
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* webkit */
 
-
-
-
-
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* ie */}
+input[type="submit"]:hover {
+  cursor: pointer;
+}
+input[name="place_order"] {
+  font-size: 1.6em;
+  margin-top: 40px;
+  float: right;
+  -moz-border-radius: 10px; /* FF1+ */
+  -webkit-border-radius: 10px; /* Saf3+, Chrome */
+  -khtml-border-radius: 10px; /* Konqueror */
+  border-radius: 10px; /* Standard. IE9 */
+}
