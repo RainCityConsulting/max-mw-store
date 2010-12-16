@@ -16,9 +16,32 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+  <!--
   <context:component-scan base-package="com.max.rcc.store.web.controller"/>
   <context:component-scan base-package="com.max.rcc.store.web.propertyeditor"/>
   <context:component-scan base-package="com.max.rcc.store.web.validation"/>
+  -->
+  <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+  <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+  <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+  <!--
+  <bean class="com.max.rcc.store.web.validation.AddressValidator"/>
+  <bean class="com.max.rcc.store.web.validation.ProfileValidator"/>
+  <bean class="com.max.rcc.store.web.validation.RegisterValidator"/>
+  <bean class="com.max.rcc.store.web.validation.CheckoutFormValidator" init-method="init"/>
+  -->
+
+  <bean class="com.max.rcc.store.web.controller.MainController"/>
+  <bean class="com.max.rcc.store.web.controller.AdminController"/>
+  <bean class="com.max.rcc.store.web.controller.CartController"/>
+  <bean class="com.max.rcc.store.web.controller.CheckoutController"/>
+  <bean class="com.max.rcc.store.web.controller.PaypalExpressCheckoutPaymentController"/>
+  <bean class="com.max.rcc.store.web.controller.PaypalExpressCheckoutController"/>
+  <bean class="com.max.rcc.store.web.controller.UserController"/>
+  <bean class="com.max.rcc.store.web.controller.RegisterController"/>
+  <bean class="com.max.rcc.store.web.controller.ProfileController"/>
+  <bean class="com.max.rcc.store.web.controller.AddressEditController"/>
 
   <bean id="conversionService"
       class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
