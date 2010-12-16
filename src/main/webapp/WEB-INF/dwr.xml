@@ -7,9 +7,16 @@
   <allow>
 
     <convert converter="bean" match="com.pj.bean.Region"/>
-                    
+    <convert converter="bean" match="com.pj.bean.Money"/>
+
+    <convert converter="bean" match="com.max.rcc.store.web.NVP"/>
+
     <create creator="spring" javascript="AddressQuery">
       <param name="beanName" value="addressQuery"/>
+    </create>
+
+    <create creator="spring" javascript="AjaxService">
+      <param name="beanName" value="ajaxService"/>
     </create>
 
   </allow>
