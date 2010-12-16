@@ -150,7 +150,7 @@ ul.options li {
 }
 
 #menu-main-menu li ul li a {
- width: 940px;
+ width: 600px;
  display: block;
 }
 
@@ -296,6 +296,10 @@ input[type="text"], select {
   border: none;
   padding: 5px;
 }
+input.quantity {
+  width: 60px;
+  margin-right: 10px;
+}
 h1 #shipping_address {
   padding-left: 0;
   margin-top: 20px;
@@ -341,6 +345,7 @@ input[type="submit"] {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* webkit */
 
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* ie */}
+}
 input[type="submit"]:hover {
   cursor: pointer;
 }
