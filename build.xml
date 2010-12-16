@@ -1,7 +1,10 @@
 <project name="max-mw-store" default="compile" basedir=".">
 
   <property name="name" value="max-mw-store"/>
+  <!--
   <property name="catalina.base" value="/etc/tomcat6"/>
+  -->
+  <property name="catalina.base" value="${user.home}/opt/tomcat6/conf"/>
 
   <loadfile property="version" srcFile="${basedir}/.version">
     <filterchain>
